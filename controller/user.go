@@ -168,3 +168,13 @@ func (c *Controller) UploadUserImage(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, Message{Message: fmt.Sprintf("upload complete userID=%d filename=%s", id, file.Filename)})
 }
+
+func (c *Controller) RouteUser(r *gin.RouterGroup) {
+	users := r.Group("/users")
+	users.GET(":id", c.ShowUser)
+	users.GET("", c.ListUsers)
+	users.POST("", c.AddUser)
+	users.DELETE(":id", c.DeleteUser)
+	users.PATCH(":id", c.UpdateUser)
+	users.POST(":id/images", c.UploadUserImage)
+}

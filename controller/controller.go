@@ -24,17 +24,7 @@ func GinHandler(r *gin.Engine) *gin.Engine {
 	c := NewController()
 
 	v1 := r.Group("/api/v1")
-	{
-		users := v1.Group("/users")
-		{
-			users.GET(":id", c.ShowUser)
-			users.GET("", c.ListUsers)
-			users.POST("", c.AddUser)
-			users.DELETE(":id", c.DeleteUser)
-			users.PATCH(":id", c.UpdateUser)
-			users.POST(":id/images", c.UploadUserImage)
-		}
-	}
+	c.RouteUser(v1)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r;
 }
