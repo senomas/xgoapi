@@ -15,3 +15,9 @@ $ go run main.go
 
 [open swagger](http://localhost:8080/swagger/index.html)
 
+
+Test app
+
+```console
+$ go test -v ./...
+```

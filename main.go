@@ -8,9 +8,6 @@ import (
 	"github.com/senomas/xgoapi/controller"
 	_ "github.com/senomas/xgoapi/docs"
 	"github.com/senomas/xgoapi/httputil"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title Swagger Example API
@@ -55,27 +52,8 @@ import (
 // @authorizationUrl https://example.com/oauth/authorize
 // @scope.admin Grants read and write access to administrative information
 
-func GinHandler(r *gin.Engine) *gin.Engine {
-	c := controller.NewController()
-
-	v1 := r.Group("/api/v1")
-	{
-		users := v1.Group("/users")
-		{
-			users.GET(":id", c.ShowUser)
-			users.GET("", c.ListUsers)
-			users.POST("", c.AddUser)
-			users.DELETE(":id", c.DeleteUser)
-			users.PATCH(":id", c.UpdateUser)
-			users.POST(":id/images", c.UploadUserImage)
-		}
-	}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	return r;
-}
-
 func main() {
-	GinHandler(gin.Default()).Run(":8080")
+	controller.GinHandler(gin.Default()).Run(":8080")
 }
 
 func auth() gin.HandlerFunc {
