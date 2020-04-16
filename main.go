@@ -55,25 +55,27 @@ import (
 // @authorizationUrl https://example.com/oauth/authorize
 // @scope.admin Grants read and write access to administrative information
 
-func main() {
-	r := gin.Default()
-
+func GinHandler(r *gin.Engine) *gin.Engine {
 	c := controller.NewController()
 
 	v1 := r.Group("/api/v1")
 	{
-		accounts := v1.Group("/accounts")
+		users := v1.Group("/users")
 		{
-			accounts.GET(":id", c.ShowAccount)
-			accounts.GET("", c.ListAccounts)
-			accounts.POST("", c.AddAccount)
-			accounts.DELETE(":id", c.DeleteAccount)
-			accounts.PATCH(":id", c.UpdateAccount)
-			accounts.POST(":id/images", c.UploadAccountImage)
+			users.GET(":id", c.ShowUser)
+			users.GET("", c.ListUsers)
+			users.POST("", c.AddUser)
+			users.DELETE(":id", c.DeleteUser)
+			users.PATCH(":id", c.UpdateUser)
+			users.POST(":id/images", c.UploadUserImage)
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	r.Run(":8080")
+	return r;
+}
+
+func main() {
+	GinHandler(gin.Default()).Run(":8080")
 }
 
 func auth() gin.HandlerFunc {
